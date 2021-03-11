@@ -27,6 +27,13 @@ const router = express.Router()
     "message": "Password must be longer than 3 chars"
   }
  */
+router.post("/", async (req, res, next) => {
+	try {
+
+	} catch (err) {
+		next(err)
+	}
+})
 
 
 /**

@@ -2,6 +2,7 @@
 const express = require("express")
 const bcrypt = require("bcryptjs")
 const Users = require("./users-model")
+const { restricted } = require("../auth/auth-middleware")
 
 const router = express.Router()
 
@@ -27,7 +28,13 @@ const router = express.Router()
     "message": "You shall not pass!"
   }
  */
-
+router.get("/", restricted(), async (req, res, next) => {
+	try {
+		res.json(await Users.find())
+	} catch (err) {
+		next(err)
+	}
+})
 
 
 // Don't forget to add the router to the `exports` object so it can be required in other modules
