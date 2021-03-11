@@ -1,6 +1,5 @@
 // Require the `restricted` middleware from `auth-middleware.js`. You will need it here!
 const express = require("express")
-const bcrypt = require("bcryptjs")
 const Users = require("./users-model")
 const { restricted } = require("../auth/auth-middleware")
 
