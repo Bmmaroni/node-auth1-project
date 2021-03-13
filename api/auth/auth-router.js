@@ -32,8 +32,9 @@ const router = express.Router()
  */
 router.post("/register", checkUsernameFree(), checkPasswordLength(), async (req, res, next) => {
 	try {
+		const { username, password } = req.body
 		const newUser = await Users.add({
-			username,
+			username: username,
 			password: await bcrypt.hash(password, 14)
 		})
 
@@ -67,16 +68,15 @@ router.post("/login", checkUsernameExists(), async (req, res, next) => {
 		const passwordValid = await bcrypt.compare(password, user ? user.password : "")
 
 		if (!user || !passwordValid) {
-			res.status(401).json({
+			return res.status(401).json({
 				message: "Invalid credentials"
 			})
-		} else {
-			req.session.user = user
-
-			res.status(200).json({
-				message: `Welcome ${user.username}!`
-			})
 		}
+		req.session.chocolatechip = user
+
+		res.status(200).json({
+			message: `Welcome ${user.username}!`
+		})
 	} catch (err) {
 		next(err)
 	}
@@ -100,11 +100,14 @@ router.post("/login", checkUsernameExists(), async (req, res, next) => {
  */
 router.get("/logout", async (req, res, next) => {
 	try {
+			if (!req.session.chocolatechip) {
+				return res.status(200).json({
+					message: "no session"
+				})
+			}
 			req.session.destroy(err => {
 				if (err) {
-					res.status(200).json({
-						message: "no session"
-					})
+					next(err)
 				} else {
 					res.status(200).json({
 						message: "logged out"

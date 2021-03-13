@@ -28,7 +28,8 @@ server.use(cors());
 server.use(session({
 	resave: false,
 	saveUninitialized: false,
-	secret: "chocolatechip",
+	secret: "Keep it secret keep it safe",
+	name: "chocolatechip",
 	store: new KnexSessionStore({
 		knex: db,
 		createtable: true,

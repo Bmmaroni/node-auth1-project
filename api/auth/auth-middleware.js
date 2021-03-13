@@ -11,7 +11,7 @@ const Users = require("../users/users-model")
 function restricted() {
 	return async (req, res, next) => {
 		try {
-			if (!req.session || !req.session.user) {
+			if (!req.session || !req.session.chocolatechip) {
 				return res.status(401).json({
 					message: "You shall not pass!"
 				})
@@ -41,7 +41,7 @@ function checkUsernameFree() {
 					message: "Username taken"
 				})
 			} else {
-				next()
+				next()	
 			}
 		} catch (err) {
 			next(err)
@@ -87,7 +87,7 @@ function checkPasswordLength() {
 	return async (req, res, next) => {
 		try {
 			const { username } = req.body
-			if (!username || username.length < 3) {
+			if (!username || username.length < 4) {
 				res.status(422).json({
 					message: "Password must be longer than 3 chars"
 				})
